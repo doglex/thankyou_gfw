@@ -1,0 +1,15 @@
+id,vcpu_count,ram,disk,disk_count,bandwidth,monthly_cost,type,locations
+vc2-1c-1gb,1,1024,25,1,1024,5.0,vc2,"['ewr', 'ord', 'dfw', 'sea', 'lax', 'atl', 'ams', 'lhr', 'fra', 'sjc', 'syd', 'yto', 'cdg', 'nrt', 'waw', 'mad', 'icn', 'mia', 'sgp', 'sto', 'mex', 'mel']"
+vc2-1c-1gb-sc1,1,1024,25,1,1024,7.5,vc2,['sao']
+vc2-1c-2gb,1,2048,55,1,2048,10.0,vc2,"['ewr', 'ord', 'dfw', 'lax', 'atl', 'ams', 'lhr', 'fra', 'sjc', 'syd', 'yto', 'cdg', 'nrt', 'waw', 'mad', 'icn', 'mia', 'sgp', 'sto', 'mex', 'mel']"
+vc2-1c-2gb-sc1,1,2048,55,1,2048,15.0,vc2,['sao']
+vc2-2c-4gb,2,4096,80,1,3072,20.0,vc2,"['ewr', 'ord', 'dfw', 'lax', 'atl', 'ams', 'lhr', 'fra', 'sjc', 'syd', 'yto', 'cdg', 'nrt', 'waw', 'mad', 'icn', 'mia', 'sgp', 'sto', 'mex', 'mel']"
+vc2-2c-4gb-sc1,2,4096,80,1,3072,30.0,vc2,['sao']
+vhp-1c-1gb-amd,1,1024,25,1,2048,6.0,vhp,"['ewr', 'ord', 'dfw', 'sea', 'lax', 'atl', 'ams', 'lhr', 'sjc', 'syd', 'yto', 'cdg', 'waw', 'icn', 'mia', 'sgp', 'sto', 'mel', 'hnl', 'bom']"
+vhp-1c-2gb-amd,1,2048,50,1,3072,12.0,vhp,"['ewr', 'ord', 'dfw', 'sea', 'lax', 'atl', 'ams', 'lhr', 'sjc', 'syd', 'yto', 'cdg', 'waw', 'icn', 'mia', 'sgp', 'sto', 'mel', 'hnl', 'bom']"
+vhp-2c-2gb-amd,2,2048,60,1,4096,18.0,vhp,"['ewr', 'ord', 'dfw', 'sea', 'lax', 'atl', 'ams', 'lhr', 'sjc', 'syd', 'yto', 'cdg', 'waw', 'icn', 'mia', 'sgp', 'sto', 'mel', 'hnl', 'bom']"
+vhp-2c-4gb-amd,2,4096,100,1,5120,24.0,vhp,"['ewr', 'ord', 'dfw', 'sea', 'lax', 'atl', 'ams', 'lhr', 'sjc', 'syd', 'yto', 'cdg', 'waw', 'icn', 'mia', 'sgp', 'sto', 'mel', 'hnl', 'bom']"
+vhp-1c-1gb-intel,1,1024,25,1,2048,6.0,vhp,"['ewr', 'ord', 'dfw', 'sea', 'lax', 'atl', 'ams', 'lhr', 'fra', 'sjc', 'syd', 'yto', 'cdg', 'nrt', 'waw', 'mad', 'icn', 'mia', 'sgp', 'sto', 'mex', 'mel', 'hnl', 'bom']"
+vhp-1c-2gb-intel,1,2048,50,1,3072,12.0,vhp,"['ewr', 'ord', 'dfw', 'sea', 'lax', 'atl', 'ams', 'lhr', 'fra', 'sjc', 'syd', 'yto', 'cdg', 'nrt', 'waw', 'mad', 'icn', 'mia', 'sgp', 'sto', 'mex', 'mel', 'hnl', 'bom']"
+vhp-2c-2gb-intel,2,2048,60,1,4096,18.0,vhp,"['ewr', 'ord', 'dfw', 'sea', 'lax', 'atl', 'ams', 'lhr', 'fra', 'sjc', 'syd', 'yto', 'cdg', 'nrt', 'waw', 'mad', 'icn', 'mia', 'sgp', 'sto', 'mex', 'mel', 'hnl', 'bom']"
+vhp-2c-4gb-intel,2,4096,100,1,5120,24.0,vhp,"['ewr', 'ord', 'dfw', 'sea', 'lax', 'atl', 'ams', 'lhr', 'fra', 'sjc', 'syd', 'yto', 'cdg', 'nrt', 'waw', 'mad', 'icn', 'mia', 'sgp', 'sto', 'mex', 'mel', 'hnl', 'bom']"

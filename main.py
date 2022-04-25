@@ -1,9 +1,12 @@
 import argparse
 import requests
 import pandas as pd
-pd.set_option('display.max_columns',None)
-pd.set_option('display.width',1000)
+
+pd.set_option('display.max_columns', None)
+pd.set_option('display.width', 1000)
 from api_key import api_key, ssh_pub
+from datetime import datetime
+from time import sleep
 
 url_prefix = "https://api.vultr.com/v2"
 headers_api = {"Authorization": f"Bearer {api_key}"}
@@ -44,10 +47,12 @@ def get_ssh_key(n=0):
     print(f"ssh_key: {key_n}")
     return key_n
 
+
 def list_regions():
-    ans = requests.get(f"{url_prefix}/regions", headers=headers_api,).json()
-    for region in sorted(ans["regions"], key=lambda x:x["country"]):
+    ans = requests.get(f"{url_prefix}/regions", headers=headers_api, ).json()
+    for region in sorted(ans["regions"], key=lambda x: x["country"]):
         print(f"{region['id']}, {region['city']}, {region['country']}")
+
 
 def list_plans():
     ans = requests.get(f"{url_prefix}/plans", headers=headers_api, ).json()
@@ -60,11 +65,82 @@ def list_plans():
     #  vhp-1c-2gb-amd ,   vhp-1c-2gb-amd ,   vc2-1c-2gb,  vc2-1c-1gb
 
 
+def list_os():
+    ans = requests.get(f"{url_prefix}/os", headers=headers_api, ).json()
+    print(ans)
 
 
+def create_instance(remove_old=True):
+    if remove_old:
+        remove_all_instances()
+    the_name = "x-" + str(datetime.now())[:19].replace(" ", "").replace(":", "-")
+    print(the_name)
+    json = {
+        "region": "lax",
+        "plan": "vhp-1c-2gb-amd",
+        "label": "x",
+        "os_id": 352,
+        "backups": "disabled",
+        "enable_ipv6": True,
+        "hostname": the_name,
+        "sshkey_id": [get_ssh_key(), ]
+    }
+    ans = requests.post(f"{url_prefix}/instances", headers=headers_api, json=json)
+    print(ans.json())
+    sleep(3)
+    while 1:
+        try:
+            ans2 = requests.get(f"{url_prefix}/instances", headers=headers_api, timeout=3).json()
+        except:
+            print("busy")
+            sleep(3)
+            continue
+        ok = False
+        for instance in ans2["instances"]:
+            iid = instance["id"]
+            hostname = instance["hostname"]
+            if hostname != the_name:
+                continue
+            ip = instance["main_ip"]
+            status = instance["status"]
+            power_status = instance["power_status"]
+            info = [iid, hostname, ip, status, power_status]
+            print(" | ".join(info))
+            if power_status == "running" and status == "active":
+                ok = True
+        if ok:
+            break
+        sleep(5)
+    print("waiting 30 sec")
+    sleep(30)
+
+
+def list_instances():
+    ans = requests.get(f"{url_prefix}/instances", headers=headers_api, ).json()
+    for instance in ans["instances"]:
+        iid = instance["id"]
+        hostname = instance["hostname"]
+        ip = instance["main_ip"]
+        status = instance["status"]
+        power_status = instance["power_status"]
+        info = [iid, hostname, ip, status, power_status]
+        print(" | ".join(info))
+
+
+def remove_all_instances():
+    ans = requests.get(f"{url_prefix}/instances", headers=headers_api, ).json()
+    for instance in ans["instances"]:
+        iid = instance["id"]
+        hostname = instance["hostname"]
+        print(f"Removing {iid} | {hostname}")
+        ans = requests.delete(f"{url_prefix}/instances/{iid}", headers=headers_api, )
+        print(ans)
 
 
 if __name__ == '__main__':
     # get_credit()
     # get_ssh_key()
-    list_plans()
+    # list_os()
+    create_instance()
+    # list_instances()
+    # remove_all_instances()
