@@ -88,6 +88,7 @@ def create_instance(remove_old=True):
     ans = requests.post(f"{url_prefix}/instances", headers=headers_api, json=json)
     print(ans.json())
     sleep(3)
+    the_ip = None
     while 1:
         try:
             ans2 = requests.get(f"{url_prefix}/instances", headers=headers_api, timeout=3).json()
@@ -107,12 +108,21 @@ def create_instance(remove_old=True):
             info = [iid, hostname, ip, status, power_status]
             print(" | ".join(info))
             if power_status == "running" and status == "active":
+                the_ip = ip
                 ok = True
         if ok:
             break
         sleep(5)
-    print("waiting 30 sec")
-    sleep(30)
+    try_times = 10
+    while try_times:
+        try_times -= 1
+        print("waiting 15 second")
+        sleep(15)
+        try:
+            ssh_install_wireguard(the_ip)
+            break
+        except Exception as e:
+            print(e)
 
 
 def list_instances():
@@ -194,6 +204,7 @@ def ssh_install_wireguard(host="66.42.101.79"):
     else:
         cmd = "cat /etc/wireguard/wg0_client "
         print(cmd)
+        print(host)
         print("\n\n")
         stdin, stdout, stderr = client.exec_command(cmd)
         stdin.close()
@@ -205,7 +216,7 @@ if __name__ == '__main__':
     # get_credit()
     # get_ssh_key()
     # list_os()
-    # create_instance()
+    create_instance()
     # list_instances()
     # remove_all_instances()
-    ssh_install_wireguard()
+    # ssh_install_wireguard()
