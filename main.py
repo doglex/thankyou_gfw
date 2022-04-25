@@ -136,11 +136,76 @@ def remove_all_instances():
         ans = requests.delete(f"{url_prefix}/instances/{iid}", headers=headers_api, )
         print(ans)
 
+def ssh_install_wireguard(host="66.42.101.79"):
+    import paramiko
+    client = paramiko.SSHClient()
+    client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    client.connect(
+        username="root",
+        hostname=host,
+        timeout=10
+    )
+    cmd = "wget --no-check-certificate -O /opt/wireguard.sh https://raw.githubusercontent.com/teddysun/across/master/wireguard.sh; chmod 755  /opt/wireguard.sh"
+    print(cmd)
+    stdin, stdout,  stderr = client.exec_command(cmd)
+    stdin.close()
+    std_ans = stdout.read().decode() + stderr.read().decode()
+    print("std_ans=>", std_ans)
+
+
+    cmd = "/opt/wireguard.sh -n"
+    print(cmd)
+    stdin, stdout, stderr = client.exec_command(cmd)
+    stdin.close()
+    while not stdout.channel.exit_status_ready():
+        result = stdout.readline()
+        print(result.strip("\n"))
+    std_ans = stdout.read().decode() + stderr.read().decode()
+    print("std_ans=>", std_ans)
+
+    installed = False
+    cmd = "/opt/wireguard.sh -r"  # todo
+    print(cmd)
+    stdin, stdout, stderr = client.exec_command(cmd)
+    stdin.close()
+    while not stdout.channel.exit_status_ready():
+        result = stdout.readline()
+        if "Enjoy it" in result:
+            installed = True
+        print(result.strip("\n"))
+    std_ans = stdout.read().decode() + stderr.read().decode()
+    print("std_ans=>", std_ans)
+
+    if not installed:
+        cmd = "/opt/wireguard.sh -s"
+        print(cmd)
+        stdin, stdout, stderr = client.exec_command(cmd)
+        stdin.close()
+        while not stdout.channel.exit_status_ready():
+            result = stdout.readline()
+            if "Enjoy it" in result:
+                installed = True
+            print(result.strip("\n"))
+        std_ans = stdout.read().decode() + stderr.read().decode()
+        print("std_ans=>", std_ans)
+
+    if not installed:
+        print("Unable to Install Wireguard. Please change vps !!!")
+    else:
+        cmd = "cat /etc/wireguard/wg0_client "
+        print(cmd)
+        print("\n\n")
+        stdin, stdout, stderr = client.exec_command(cmd)
+        stdin.close()
+        std_ans = stdout.read().decode() + stderr.read().decode()
+        print(std_ans)
+
 
 if __name__ == '__main__':
     # get_credit()
     # get_ssh_key()
     # list_os()
-    create_instance()
+    # create_instance()
     # list_instances()
     # remove_all_instances()
+    ssh_install_wireguard()
