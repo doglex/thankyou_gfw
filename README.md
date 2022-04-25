@@ -1,10 +1,24 @@
-# thankyou_gfw
-+ 需要设置允许ip访问
+## 寓意
++ G: Great 
++ F: Fast 
++ W: Win 
 
-## todo 
-startup时创建进去ssh，
-然后用ssh执行
-可以直接安装sshkey的
-或者在网页端先创建好sshkey
-使用root登录
+## how to use 
+```
+alias wg=C:\Conda3\python.exe D:\PyProjects\thankyou_gfw\main.py $*
+```
 
+```
+C:\Users\dog\Desktop>wg -h
+usage: python main.py [-h] [-c] [-i] [-d] [-l] [...]
+
+positional arguments:
+                 other args
+
+optional arguments:
+  -h, --help     show this help message and exit
+  -c, --credit   显示余额
+  -i, --install  新建节点
+  -d, --destroy  删除所有节点
+  -l, --list     列出节点
+```

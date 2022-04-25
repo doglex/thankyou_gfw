@@ -1,9 +1,5 @@
 import argparse
 import requests
-import pandas as pd
-
-pd.set_option('display.max_columns', None)
-pd.set_option('display.width', 1000)
 from api_key import api_key, ssh_pub
 from datetime import datetime
 from time import sleep
@@ -24,10 +20,19 @@ def run_by_shell():
     parser = argparse.ArgumentParser(prog="python main.py")
     parser.add_argument('other', metavar='', type=str, nargs='*', help='other args')
     parser.add_argument('-c', '--credit', dest="c", action="store_true", default=False, help="显示余额")
+    parser.add_argument('-i', '--install', dest="i", action="store_true", default=False, help="新建节点")
+    parser.add_argument('-d', '--destroy', dest="d", action="store_true", default=False, help="删除所有节点")
+    parser.add_argument('-l', '--list', dest="l", action="store_true", default=False, help="列出节点")
     args = parser.parse_args()
     # print(args)
     if args.c:
         get_credit()
+    if args.i:
+        create_instance()
+    if args.d:
+        remove_all_instances()
+    if args.l:
+        list_instances()
 
 
 def list_ssh_keys():
@@ -59,6 +64,9 @@ def list_plans():
     plans = ans["plans"]
     plans = [p for p in plans if p["id"].startswith("vc2") or p["id"].startswith("vhp")]
     plans = [p for p in plans if p["monthly_cost"] < 32]
+    import pandas as pd
+    pd.set_option('display.max_columns', None)
+    pd.set_option('display.width', 1000)
     df = pd.DataFrame(plans)
     df.to_csv("plans.csv", index=False)
     print(df)
@@ -216,7 +224,8 @@ if __name__ == '__main__':
     # get_credit()
     # get_ssh_key()
     # list_os()
-    create_instance()
+    # create_instance()
     # list_instances()
     # remove_all_instances()
     # ssh_install_wireguard()
+    run_by_shell()
