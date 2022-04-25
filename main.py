@@ -1,5 +1,8 @@
 import argparse
 import requests
+import pandas as pd
+pd.set_option('display.max_columns',None)
+pd.set_option('display.width',1000)
 from api_key import api_key, ssh_pub
 
 url_prefix = "https://api.vultr.com/v2"
@@ -48,7 +51,13 @@ def list_regions():
 
 def list_plans():
     ans = requests.get(f"{url_prefix}/plans", headers=headers_api, ).json()
-    print(ans)
+    plans = ans["plans"]
+    plans = [p for p in plans if p["id"].startswith("vc2") or p["id"].startswith("vhp")]
+    plans = [p for p in plans if p["monthly_cost"] < 32]
+    df = pd.DataFrame(plans)
+    df.to_csv("plans.csv", index=False)
+    print(df)
+    #  vhp-1c-2gb-amd ,   vhp-1c-2gb-amd ,   vc2-1c-2gb,  vc2-1c-1gb
 
 
 
