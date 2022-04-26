@@ -24,6 +24,7 @@ def run_by_shell():
     parser.add_argument('-i', '--install', dest="i", action="store_true", default=False, help="新建节点")
     parser.add_argument('-d', '--destroy', dest="d", action="store_true", default=False, help="删除所有节点")
     parser.add_argument('-l', '--list', dest="l", action="store_true", default=False, help="列出节点")
+    parser.add_argument('-lr', '--list_regions', dest="lr", action="store_true", default=False, help="列出地区")
     args = parser.parse_args()
     # print(args)
     if args.c:
@@ -34,6 +35,8 @@ def run_by_shell():
         remove_all_instances()
     if args.l:
         list_instances()
+    if args.lr:
+        list_regions()
 
 
 def list_ssh_keys():
@@ -85,10 +88,10 @@ def create_instance(remove_old=True):
     the_name = "x-" + str(datetime.now())[:19].replace(" ", "-").replace(":", "-")
     print(the_name)
     json = {
-        "region": "lax",
-        "plan": "vc2-1c-2gb",
+        "region": "mia",
+        "plan": "vhp-1c-2gb-amd",
         "label": "x",
-        "os_id": 352,
+        "os_id": 477,
         "backups": "disabled",
         "enable_ipv6": True,
         "hostname": the_name,
@@ -245,3 +248,4 @@ if __name__ == '__main__':
     # remove_all_instances()
     # ssh_install_wireguard()
     run_by_shell()
+    # list_regions()
