@@ -189,11 +189,12 @@ def ssh_install_wireguard(host="66.42.101.79"):
     stdin.close()
     while not stdout.channel.exit_status_ready():
         result = stdout.readline()
+        print(result.strip("\n"))
         if "Enjoy it" in result:
             installed = True
-        print(result.strip("\n"))
-    std_ans = stdout.read().decode() + stderr.read().decode()
-    print("std_ans=>", std_ans)
+            break
+    # std_ans = stdout.read().decode() + stderr.read().decode()
+    # print("std_ans=>", std_ans)
 
     if not installed:
         cmd = "/opt/wireguard.sh -s"
@@ -202,14 +203,27 @@ def ssh_install_wireguard(host="66.42.101.79"):
         stdin.close()
         while not stdout.channel.exit_status_ready():
             result = stdout.readline()
+            print(result.strip("\n"))
             if "Enjoy it" in result:
                 installed = True
-            print(result.strip("\n"))
-        std_ans = stdout.read().decode() + stderr.read().decode()
-        print("std_ans=>", std_ans)
+                break
+
+        # std_ans = stdout.read().decode() + stderr.read().decode()
+        # print("std_ans=>", std_ans)
 
     if not installed:
-        print("Unable to Install Wireguard. Please change vps !!!")
+        print("[Maybe] Unable to Install Wireguard. Please change vps !!!")
+
+        cmd = "cat /etc/wireguard/wg0_client "
+        print(cmd)
+        print(host)
+        print("\n\n")
+        stdin, stdout, stderr = client.exec_command(cmd)
+        stdin.close()
+        std_ans = stdout.read().decode() + stderr.read().decode()
+        print(std_ans)
+        pyperclip.copy(std_ans)
+
     else:
         cmd = "cat /etc/wireguard/wg0_client "
         print(cmd)
