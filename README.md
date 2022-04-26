@@ -22,3 +22,6 @@ optional arguments:
   -d, --destroy  删除所有节点
   -l, --list     列出节点
 ```
+
+## 注意
++ Windows下使用git的ssh，不要安装Openssl。可能 debconf: unable to initialize frontend: Dialog

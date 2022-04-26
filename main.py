@@ -3,6 +3,7 @@ import requests
 from api_key import api_key, ssh_pub
 from datetime import datetime
 from time import sleep
+import pyperclip
 
 url_prefix = "https://api.vultr.com/v2"
 headers_api = {"Authorization": f"Bearer {api_key}"}
@@ -81,11 +82,11 @@ def list_os():
 def create_instance(remove_old=True):
     if remove_old:
         remove_all_instances()
-    the_name = "x-" + str(datetime.now())[:19].replace(" ", "").replace(":", "-")
+    the_name = "x-" + str(datetime.now())[:19].replace(" ", "-").replace(":", "-")
     print(the_name)
     json = {
         "region": "lax",
-        "plan": "vhp-1c-2gb-amd",
+        "plan": "vc2-1c-2gb",
         "label": "x",
         "os_id": 352,
         "backups": "disabled",
@@ -218,6 +219,7 @@ def ssh_install_wireguard(host="66.42.101.79"):
         stdin.close()
         std_ans = stdout.read().decode() + stderr.read().decode()
         print(std_ans)
+        pyperclip.copy(std_ans)
 
 
 if __name__ == '__main__':
