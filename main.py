@@ -88,7 +88,7 @@ def create_instance(remove_old=True):
     the_name = "x-" + str(datetime.now())[:19].replace(" ", "-").replace(":", "-")
     print(the_name)
     json = {
-        "region": "mia",
+        "region": "lax",  # ewr地区被阻止了
         "plan": "vhp-1c-2gb-amd",
         "label": "x",
         "os_id": 477,
